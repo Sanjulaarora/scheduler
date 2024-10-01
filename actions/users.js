@@ -5,6 +5,7 @@ import { db } from '@/lib/prisma';
 
 export async function updateUsername(username) {
     const { userId } = auth();
+    
     if(!userId) {
         throw new Error('Unauthorized');
     }

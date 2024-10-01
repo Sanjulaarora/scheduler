@@ -6,7 +6,6 @@ import {
   Drawer,
   DrawerClose,
   DrawerContent,
-  DrawerDescription,
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
@@ -22,34 +21,34 @@ export default function CreateEventDrawer() {
   useEffect(() => {
     const create = searchParams.get('create');
     if(create === 'true') {
-        setIsOpen(true);
+      setIsOpen(true);
     }
-  },[searchParams])
+  },[searchParams]);
 
   const handleClose = () => {
     setIsOpen(false);
     if(searchParams.get('create') === 'true') {
-        router.replace(window.location?.pathname)
+      router.replace(window?.location.pathname)
     }
   };
 
   return (
-    <Drawer open={isOpen} close={handleClose}>
+    <Drawer open={isOpen} onClose={handleClose}>
       <DrawerContent>
-          <DrawerHeader>
-             <DrawerTitle>Create New Event</DrawerTitle>
-          </DrawerHeader>
-          <EventForm 
-              onSubmitForm = {() => {
-                handleClose();
-              }}
-          />
-          <DrawerFooter>
-                <DrawerClose asChild>
-                  <Button variant="outline" onClick={handleClose}>Cancel</Button>
-                </DrawerClose>
-          </DrawerFooter>
+        <DrawerHeader>
+          <DrawerTitle>Create New Event</DrawerTitle>
+        </DrawerHeader>
+        <EventForm 
+          onSubmitForm = {() => {
+            handleClose();
+          }}
+        />
+        <DrawerFooter className="px-6">
+          <DrawerClose asChild>
+            <Button variant="outline" onClick={handleClose}>Cancel</Button>
+          </DrawerClose>
+        </DrawerFooter>
       </DrawerContent>
     </Drawer>
-  )
+  );
 }

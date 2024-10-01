@@ -35,9 +35,9 @@ model Event {
   userId      String
   user        User      @relation("UserEvents", fields: [userId], references: [id])
   bookings    Booking[]
-  isPrivate   Boolean
-  createdAt   DateTime
-  updatedAt   DateTime
+  isPrivate   Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
 
 model Booking {

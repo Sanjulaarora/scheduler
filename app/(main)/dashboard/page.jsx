@@ -23,10 +23,10 @@ const Dashboard = () => {
     setValue("username", user?.username);
   }, [isLoaded]);
 
-  const { loading, error, data, fn: fnUpdateUsername} = useFetch(updateUsername);
+  const { loading, error, fn: fnUpdateUsername} = useFetch(updateUsername);
 
   const onSubmit = async(data) => {
-    fnUpdateUsername(data.username);
+    await fnUpdateUsername(data.username);
   };
 
   return (
@@ -53,7 +53,6 @@ const Dashboard = () => {
                 <span>{window?.location.origin}/</span>
                 <Input {...register('username')} placeholder='username' />
               </div>
-            
               {errors.username && (
                 <p className='text-red-500 text-sm mt-1'>
                   {errors.username.message}
@@ -66,7 +65,7 @@ const Dashboard = () => {
               )}
             </div>
             {loading && <BarLoader className='mb-4' width={'100%'} color='#36d7b7' />}
-            <Button type='submit'>Update Username</Button>
+            <Button type='submit' disabled={loading}>Update Username</Button>
           </form>
         </CardContent>
       </Card>

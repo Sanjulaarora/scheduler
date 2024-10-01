@@ -1,14 +1,23 @@
+'use client';
+
 import React from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { eventSchema } from '@/app/lib/validator';
-import { Input } from './ui/input';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectContent } from './ui/select';
-import { Button } from './ui/button';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
+import useFetch from '@/hooks/use-fetch';
+import { createEvent } from '@/actions/events';
+import { useRouter } from 'next/navigation';
+import { Textarea } from '@/components/ui/textarea';
 
-const EventForm = () => {
+const EventForm = ({ onSubmitForm }) => {
+  const router = useRouter();
+
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors },
   } = useForm({
@@ -19,8 +28,16 @@ const EventForm = () => {
     },
   });
 
+  const { loading, error, fn: fnCreateEvent} = useFetch(createEvent);
+
+  const onSubmit = async(data) => {
+    await fnCreateEvent(data);
+    if(!loading && !error) onSubmitForm();
+    router.refresh(); // Refresh the page to show updated data
+  };
+
   return (
-    <form className="px-5 flex flex-col gap-4">
+    <form className="px-6 flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
       <div>
         <label
           htmlFor='title'
@@ -43,7 +60,7 @@ const EventForm = () => {
         >
           Event Description
         </label>
-        <Input id='description' {...register('description')} className='mt-1' />
+        <Textarea {...register('description')} id='description' className='mt-1' />
         {errors.description && (
           <p className='text-red-500 text-sm mt-1'>
             {errors.description.message}
@@ -77,11 +94,10 @@ const EventForm = () => {
         >
           Event Privacy
         </label>
-
         <Controller name='isPrivate' control={control} 
-          render = {({ field }) => {
-            <Select value={field.value? 'true' : 'false'}
-              onValueChange={(value) => field.onChange(value === 'true')}
+          render = {({ field }) => (
+            <Select onValueChange={(value) => field.onChange(value === 'true')}
+            value={field.value? 'true' : 'false'}
             >
               <SelectTrigger className="mt-1">
                 <SelectValue placeholder="Select Privacy" />
@@ -91,17 +107,22 @@ const EventForm = () => {
                 <SelectItem value="false">Public</SelectItem>
               </SelectContent>
             </Select>
-          }}
+          )}
         />
         {errors.isPrivate && (
-          <p className='text-red-500 text-sm mt-1'>
+          <p className='text-red-500 text-xs mt-1'>
             {errors.isPrivate.message}
           </p>
         )}
       </div>
-      <Button type='submit'>Submit</Button>
+
+      {error && <p className='text-red-500 text-xs mt-1'>{error.message}</p>}
+
+      <Button type='submit' disabled={loading}>
+        {loading ? 'submitting...' : 'Create Event'}
+      </Button>
     </form>
-  )
-}
+  );
+};
 
 export default EventForm;
