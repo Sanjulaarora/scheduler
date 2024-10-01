@@ -9,6 +9,8 @@ import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@
 import { timeSlots } from '../data';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import useFetch from '@/hooks/use-fetch';
+import { updateAvailability } from '@/actions/availability';
 
 const AvailabilityForm = ({initialData}) => {
 
@@ -17,8 +19,18 @@ const AvailabilityForm = ({initialData}) => {
        defaultValues: { ...initialData },
    });
 
+   const {
+       fn: fnupdateAvailability,
+       loading,
+       error
+    } = useFetch(updateAvailability);
+
+    const onSubmit = async(data) => {
+        await fnupdateAvailability(data);
+    }
+
   return (
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
             {[
                 'monday',
                 'tuesday',
@@ -134,8 +146,9 @@ const AvailabilityForm = ({initialData}) => {
                     </span>
                 )}
             </div>
-            <Button type='submit' className='mt-5'>
-                Update Availability
+            {error && <div className='text-red-500 text-sm'>{error?.message}</div>}
+            <Button type='submit' className='mt-5' disabled={loading}>
+                {loading ? "Updating..." : "Update Availability"}
             </Button>
         </form>
   )
