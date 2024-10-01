@@ -36,7 +36,7 @@ export async function getUserAvailability() {
         'saturday',
         'sunday',
     ].forEach((day) => {
-        const dayAvailability = user.availability.days.find((d) => d.days === day.toUpperCase())
+        const dayAvailability = user.availability.days.find((d) => d.day === day.toUpperCase());
         availabilityData[day] = {
             isAvailable: !!dayAvailability,
             startTime: dayAvailability?dayAvailability.startTime.toISOString().slice(11,16) : '09:00',
@@ -73,8 +73,8 @@ export async function updateAvailability(data) {
               return [
                 {
                     day: day.toUpperCase(),
-                    startTime: new Date(`${baseDate}T${startTime}`),
-                    endTime: new(`${baseDate}T${endTime}`),
+                    startTime: new Date(`${baseDate}T${startTime}:00Z`),
+                    endTime: new(`${baseDate}T${endTime}:00Z`),
                 },
               ];
             }
