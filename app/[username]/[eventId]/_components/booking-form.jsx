@@ -10,6 +10,8 @@ import { format } from 'date-fns';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
+import useFetch from '@/hooks/use-fetch';
+import { createBooking } from '@/actions/bookings';
 
 const BookingForm = ({ event, availability }) => {
   const [selectedDate, setSelectedDate] = useState(null);
@@ -43,9 +45,53 @@ const BookingForm = ({ event, availability }) => {
         }
      }, [selectedTime]);
 
+     const { loading, data, fn: fnCreateBooking } = useFetch(createBooking);
+
    const onSubmit = async(data) => {
-      console.log(data);
-   } 
+      console.log('Form Submitted with data:', data);
+
+      if (!selectedDate || !selectedTime) {
+        console.error('Date or Time not selected');
+        return;
+      }
+
+      const startTime = new Date(
+        `${format(selectedDate, 'yyyy-MM-dd')}T${selectedTime}`
+      );
+      const endTime = new Date(startTime, getTime() + event.duration * 60000);
+
+      const bookingData = {
+        eventId: event.id,
+        name: data.name,
+        email: data.email,
+        startTime: startTime.toISOString(),
+        endTime: endTime.toISOString(),
+        additionalInfo: data.additionalInfo,
+      };
+
+      await fnCreateBooking(bookingData);
+   }; 
+
+   if (data) {
+    retrun (
+        <div className='text-center p-10 border bg-white'>
+            <h2 className='text-2xl font-bold mb-4'>Booking Successful</h2>
+            {data.meetLink && (
+                <p>
+                    Join the meeting: {' '}
+                    <a
+                      href={data.meetLink}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                      className='text-blue-500 hover:underline'
+                    >
+                        {data.meetLink}
+                    </a>
+                </p>
+            )}
+        </div>
+    )
+   }
 
   return (
     <div className='flex flex-col gap-8 p-10 border bg-white'>
@@ -111,7 +157,9 @@ const BookingForm = ({ event, availability }) => {
                        placeholder='Additional Information'
                     />
                 </div>
-                <Button>Schedule Event</Button>
+                <Button type='submit' disabled={loading} className='w-full'>
+                    {loading ? "Scheduling..." : "Schedule Event"}
+                </Button>
             </form>
         )}
     </div>
