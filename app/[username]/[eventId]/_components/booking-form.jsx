@@ -13,7 +13,7 @@ import { Button } from '@/components/ui/button';
 import useFetch from '@/hooks/use-fetch';
 import { createBooking } from '@/actions/bookings';
 
-const BookingForm = ({ event, availability }) => {
+export default function BookingForm({ event, availability }) {
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
 
@@ -26,26 +26,19 @@ const BookingForm = ({ event, availability }) => {
         resolver: zodResolver(bookingSchema),
     });
 
-  const availableDays = availability.map((day) => new Date(day.date));
-    const timeSlots = selectedDate
-    ? availability.find(
-        (day) => day.date === format(selectedDate, 'yyyy-MM-dd')
-    )?.slots || []
-    : [];
-
     useEffect(() => {
-       if(selectedDate) {
-        setValue('date', format(selectedDate, 'yyyy-MM-dd'));
-       }
-    }, [selectedDate]);
-
-    useEffect(() => {
-        if(selectedTime) {
-         setValue('time', selectedTime);
+        if(selectedDate) {
+         setValue('date', format(selectedDate, 'yyyy-MM-dd'));
         }
-     }, [selectedTime]);
+     }, [selectedDate, setValue]);
+ 
+     useEffect(() => {
+        if(selectedTime) {
+          setValue('time', selectedTime);
+        }
+      }, [selectedTime, setValue]);
 
-     const { loading, data, fn: fnCreateBooking } = useFetch(createBooking);
+   const { loading, data, fn: fnCreateBooking } = useFetch(createBooking);
 
    const onSubmit = async(data) => {
       console.log('Form Submitted with data:', data);
@@ -58,7 +51,7 @@ const BookingForm = ({ event, availability }) => {
       const startTime = new Date(
         `${format(selectedDate, 'yyyy-MM-dd')}T${selectedTime}`
       );
-      const endTime = new Date(startTime, getTime() + event.duration * 60000);
+      const endTime = new Date(startTime.getTime() + event.duration * 60000);
 
       const bookingData = {
         eventId: event.id,
@@ -71,6 +64,14 @@ const BookingForm = ({ event, availability }) => {
 
       await fnCreateBooking(bookingData);
    }; 
+
+   const availableDays = availability.map((day) => new Date(day.date));
+    const timeSlots = selectedDate
+    ? availability.find(
+        (day) => day.date === format(selectedDate, 'yyyy-MM-dd')
+    )?.slots || []
+    : [];
+
 
    if (data) {
     retrun (
@@ -90,7 +91,7 @@ const BookingForm = ({ event, availability }) => {
                 </p>
             )}
         </div>
-    )
+    );
    }
 
   return (
@@ -123,8 +124,7 @@ const BookingForm = ({ event, availability }) => {
                             Available Time Slots
                         </h3>
                         <div className='grid grid-cols-2 lg:grid-cols-3 gap-2'>
-                            {timeSlots.map((slot) => {
-                                return (
+                            {timeSlots.map((slot) => (
                                     <Button 
                                     key={slot} 
                                     onClick={() => setSelectedTime(slot)}
@@ -132,8 +132,7 @@ const BookingForm = ({ event, availability }) => {
                                     >
                                         {slot}
                                     </Button>
-                                );
-                            })}
+                            ))}
                         </div>
                     </div>
                 )}
@@ -144,11 +143,20 @@ const BookingForm = ({ event, availability }) => {
                 <div>
                     <Input 
                       {...register('name')} 
-                      type='email'
                       placeholder='Your Name'
                     />
                     { errors.name && (
                         <p className='text-red-500 text-sm'>{errors.name.message}</p>
+                    )}
+                </div>
+                <div>
+                    <Input
+                        {...register("email")}
+                        type="email"
+                        placeholder="Your Email"
+                    />
+                    {errors.email && (
+                    <p className="text-red-500 text-sm">{errors.email.message}</p>
                     )}
                 </div>
                 <div>
@@ -163,7 +171,5 @@ const BookingForm = ({ event, availability }) => {
             </form>
         )}
     </div>
-  )
+  );
 }
-
-export default BookingForm;

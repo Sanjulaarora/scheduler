@@ -7,7 +7,7 @@ import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
 import UserMenu from "./user-menu";
 import { checkUser } from "@/lib/checkUser";
 
-const Header = async() => {
+async function Header(){
   await checkUser();
 
   return (
@@ -24,7 +24,8 @@ const Header = async() => {
        <div className="flex items-center gap-4">
         <Link href="/event?create=true">
           <Button className="flex items-center gap-2">
-            <PenBox size={18} /> Create Event
+            <PenBox size={18} />
+            <span className="hidden sm:inline">Create Event</span>
           </Button>
         </Link>
         <SignedOut>
@@ -37,7 +38,7 @@ const Header = async() => {
         </SignedIn>
        </div>
     </nav>
-  )
+  );
 }
 
 export default Header;

@@ -47,7 +47,7 @@ export const timeSlots = [
     '22:30',
     '23:00',
     '23:30',
-]
+];
 
 export const defaultAvailability = {
     monday: { isAvailable: false, startTime: '09:00', endTime: '17:00'},

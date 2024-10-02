@@ -28,8 +28,8 @@ export const eventSchema = z.object({
 export const daySchema = z
   .object({
     isAvailable: z.boolean(),
-    startTime: z.string.optional(),
-    endTime: z.string.optional(),
+    startTime: z.string().optional(),
+    endTime: z.string().optional(),
   })
   .refine(
     (data) => {

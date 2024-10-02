@@ -14,7 +14,7 @@ const navItems = [
     { href: "/availability", label: "Availability", icon: Clock },
   ];
 
-const AppLayout = ({ children }) => {
+  export default function AppLayout({ children }) {
   const { isLoaded } = useUser();
   const pathname = usePathname();
 
@@ -61,7 +61,7 @@ const AppLayout = ({ children }) => {
                                }`}
                                >
                                 <item.icon className='w-5 h-5 mr-3' />
-                                {item.label}
+                                <span className="text-xs mt-1">{item.label}</span>                             
                             </Link>
                         </li>
                     ))}
@@ -69,7 +69,5 @@ const AppLayout = ({ children }) => {
             </nav>
         </div>    
     </>
-  )
+  );
 }
-
-export default AppLayout;

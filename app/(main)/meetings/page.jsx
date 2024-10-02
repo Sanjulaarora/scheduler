@@ -1,4 +1,5 @@
 import React, { Suspense } from 'react';
+import { getUserMeetings } from '@/actions/meetings';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import MeetingList from './_components/meeting-list';
 
@@ -7,10 +8,10 @@ export const metadata = {
   description: 'View and manage your upcoming and past meetings.',
 };
 
-const MeetingPage = () => {
+export default async function MeetingsPage() {
   return (
     <Tabs defaultValue="upcoming">
-      <TabsList>
+      <TabsList className="mb-4">
         <TabsTrigger value="upcoming">Upcoming</TabsTrigger>
         <TabsTrigger value="past">Past</TabsTrigger>
       </TabsList>
@@ -26,7 +27,7 @@ const MeetingPage = () => {
       </TabsContent>
     </Tabs>
   );
-};
+}
 
 async function UpcomingMeetings() {
   const meetings = await getUserMeetings('upcoming');
@@ -37,5 +38,3 @@ async function PastMeetings() {
   const meetings = await getUserMeetings('past');
   return <MeetingList meetings={meetings} type={'past'} />
 }
-
-export default MeetingPage;

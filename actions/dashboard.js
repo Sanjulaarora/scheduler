@@ -27,7 +27,9 @@ export async function getLatestUpdates() {
         },
         include: {
             event: {
-                select: { title: true},
+                select: { 
+                    title: true
+                },
             },
         },
         orderBy: {

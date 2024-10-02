@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, Controller } from 'react-hook-form';
@@ -12,7 +10,7 @@ import { createEvent } from '@/actions/events';
 import { useRouter } from 'next/navigation';
 import { Textarea } from '@/components/ui/textarea';
 
-const EventForm = ({ onSubmitForm }) => {
+const EventForm = ({ onSubmitForm, initialData = {} }) => {
   const router = useRouter();
 
   const {
@@ -23,8 +21,10 @@ const EventForm = ({ onSubmitForm }) => {
   } = useForm({
     resolver: zodResolver(eventSchema),
     defaultValues: {
-      duration: 30,
-      isPrivate: true,
+      title: initialData.title || "",
+      description: initialData.description || "",
+      duration: initialData.duration || 30,
+      isPrivate: initialData.isPrivate ?? true,
     },
   });
 
@@ -58,7 +58,7 @@ const EventForm = ({ onSubmitForm }) => {
           htmlFor='description'
           className='block text-sm font-medium text-gray-700'
         >
-          Event Description
+          Description
         </label>
         <Textarea {...register('description')} id='description' className='mt-1' />
         {errors.description && (
@@ -75,7 +75,8 @@ const EventForm = ({ onSubmitForm }) => {
         >
           Duration (minutes)
         </label>
-        <Input id='duration' {...register('duration',{
+        <Input id='duration' 
+        {...register('duration',{
           valueAsNumber: true,
         })} 
         type='number'

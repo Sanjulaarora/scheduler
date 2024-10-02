@@ -6,6 +6,7 @@ import { google } from "googleapis";
 
 export async function createBooking(bookingData){
     try {
+      // Fetch the event and its creator
       const event = await ab.event.findUnique({
         where: { id: bookingData.eventId },
         include: { user: true },
@@ -33,41 +34,43 @@ export async function createBooking(bookingData){
 
       const calendar = google.calendar({ version: 'v3', auth: oauth2Client });
 
+      //Create Google Meet Link
       const meetResponse = await calendar.events.insert({
         calendarId: 'primary',
         conferenceDataVersion:1,
         requestBody: {
-            summary: `${bookingData.name} - ${event.title}`,
-            description: bookingData.additionalInfo,
-            start: { dateTime: bookingData.startTime },
-            end: { dateTime: bookingData.endTime },
-            attendees: [{ email: bookingData.email }, { email: event.user.email }],
-            conferenceData: {
-                createRequest: { requestId: `${event.id} - ${Date.now()}`},
-            },
+          summary: `${bookingData.name} - ${event.title}`,
+          description: bookingData.additionalInfo,
+          start: { dateTime: bookingData.startTime },
+          end: { dateTime: bookingData.endTime },
+          attendees: [{ email: bookingData.email }, { email: event.user.email }],
+          conferenceData: {
+            createRequest: { requestId: `${event.id} - ${Date.now()}`},
+          },
         },
       });
 
       const meetLink = meetResponse.data.hangoutLink;
       const googleEventId = meetResponse.data.id;
 
+      //Create booking in database
       const booking = await db.booking.create({
         data: {
-            eventId: event.id,
-            userId: event.userId,
-            name: bookingData.name,
-            email: bookingData.email,
-            startTime: bookingData.startTime,
-            endTime: bookingData.endTime,
-            additionalInfo: bookingData.additionalInfo,
-            meetLink,
-            googleEventId,
+          eventId: event.id,
+          userId: event.userId,
+          name: bookingData.name,
+          email: bookingData.email,
+          startTime: bookingData.startTime,
+          endTime: bookingData.endTime,
+          additionalInfo: bookingData.additionalInfo,
+          meetLink,
+          googleEventId,
         },
       });
 
       return { success: true, booking, meetLink };
     } catch (error) {
-        console.error('Error creating booking:' , error);
-        return { success: false, error: error.message };
+      console.error('Error creating booking:' , error);
+      return { success: false, error: error.message };
     }
 }

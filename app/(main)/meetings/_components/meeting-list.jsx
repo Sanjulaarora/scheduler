@@ -1,16 +1,17 @@
 import React from 'react';
+import { format } from 'date-fns';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Calendar, Clock, Video } from 'lucide-react';
+import CancelMeetingButton from "./cancel-meeting";
 
-const MeetingList = ({ meetings, type}) => {
+export default function MeetingList({ meetings, type }) {
     if(meetings.length === 0) {
         return <p>No {type} meetings found.</p>
     }
 
     return (
         <div className='grid gap-4 md: grid-cols-2 lg:grid-cols-3'>
-            {meetings.map((meeting) => {
-                return (
+            {meetings.map((meeting) => (
                     <Card key={meeting.id} className='flex flex-col justify-between'>
                         <CardHeader>
                             <CardTitle>{meeting.event.title}</CardTitle>
@@ -47,15 +48,14 @@ const MeetingList = ({ meetings, type}) => {
                                 </div>
                             )}
                         </CardContent>
-                        <CardFooter>
-                            <Button variant='destructive'>Cancel Meeting</Button>
-                        </CardFooter>
+                        { type === 'upcoming' && (
+                          <CardFooter>
+                              <CancelMeetingButton meetingId={meeting.id} />
+                          </CardFooter>
+                        )}
                     </Card>
-                )
-            })}
+                ))}
         </div>
-    )
+    );
 }
   
-
-export default MeetingList;

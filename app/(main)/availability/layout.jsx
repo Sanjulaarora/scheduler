@@ -1,8 +1,8 @@
 import { Suspense } from 'react';
 
-export default function Availability({children}) {
+export default async function AvailabilityLayout({children}) {
     return(
-        <div>
+        <div className='mx-auto'>
             <Suspense fallback={<div>Loading Availability...</div>}>{children}</Suspense>
         </div>
     );

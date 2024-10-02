@@ -2,7 +2,7 @@ import React from 'react';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Calendar, Clock } from 'lucide-react';
 
-const EventDetails = ({event}) => {
+export default function EventDetails({ event }) {
   const { user } = event;
 
   return (
@@ -15,10 +15,9 @@ const EventDetails = ({event}) => {
             </Avatar>
             <div>
                 <h2 className='text-xl font-semibold'>{user.name}</h2>
-                <p className='text-gray-600'>@{user.username}</p>
+                <p className='text-gray-600'>@{user.email}</p>
             </div>
         </div>
-
         <div className='flex items-center mb-2'>
             <Clock className='mr-2' />
             <span>{event.duration} minutes</span>
@@ -31,5 +30,3 @@ const EventDetails = ({event}) => {
     </div>
   );
 }
-
-export default EventDetails;
