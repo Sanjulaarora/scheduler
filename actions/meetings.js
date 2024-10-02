@@ -1,4 +1,4 @@
-'user server';
+'use server';
 
 import { db } from "@/lib/prisma";
 import { auth, clerkClient } from "@clerk/nextjs/server";
@@ -8,15 +8,15 @@ export async function getUserMeetings(type = "upcoming") {
     const { userId } = auth();
     
     if(!userId) {
-        throw new Error('Unauthorized');
+      throw new Error('Unauthorized');
     }
 
     const user = await db.user.findUnique({
-        where: { clerkUserId: userId },
+      where: { clerkUserId: userId },
     });
 
     if(!user) {
-        throw new Error('User not found');
+      throw new Error('User not found');
     }
 
     const now = new Date();
