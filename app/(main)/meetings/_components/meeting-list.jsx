@@ -49,7 +49,7 @@ export default function MeetingList({ meetings, type }) {
                             )}
                         </CardContent>
                         { type === 'upcoming' && (
-                          <CardFooter>
+                          <CardFooter className="flex justify-between">
                               <CancelMeetingButton meetingId={meeting.id} />
                           </CardFooter>
                         )}

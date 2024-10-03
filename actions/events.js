@@ -4,7 +4,6 @@ import { db } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { eventSchema } from "@/app/lib/validator";
 
-
 export async function createEvent(data) {
     const { userId } = auth();
     
@@ -103,7 +102,6 @@ export async function getEventDetails(username, eventId){
                 select: {
                     name: true,
                     email: true,
-                    // username: true,
                     imageUrl: true,
                 },
             },

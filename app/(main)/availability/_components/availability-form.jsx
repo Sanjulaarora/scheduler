@@ -15,7 +15,7 @@ import useFetch from '@/hooks/use-fetch';
 
 export default function AvailabilityForm ({ initialData }){
 
- const { register, handleSubmit, control, setValue, watch, formState: { errors } } = useForm({
+ const { register, handleSubmit, control, setValue, watch, formState: { errors }, } = useForm({
        resolver: zodResolver(availabilitySchema),
        defaultValues: { ...initialData },
    });
@@ -28,7 +28,7 @@ export default function AvailabilityForm ({ initialData }){
 
     const onSubmit = async(data) => {
         await fnupdateAvailability(data);
-    }
+    };
 
   return (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -101,16 +101,13 @@ export default function AvailabilityForm ({ initialData }){
                                               <SelectValue placeholder='End Time'/>
                                             </SelectTrigger>
                                             <SelectContent>
-                                            {timeSlots.map((time) => (
-                                                
+                                            {timeSlots.map((time) => (  
                                                 <SelectItem key={time} value={time}>
                                                     {time}
                                                 </SelectItem>
-                                               
                                             ))}                                                    
                                             </SelectContent>
                                         </Select>
-                                        
                                     )}
                                 />
                                 {errors[day]?.endTime && (
@@ -143,5 +140,5 @@ export default function AvailabilityForm ({ initialData }){
                 {loading ? "Updating..." : "Update Availability"}
             </Button>
         </form>
-  );
+    );
 }

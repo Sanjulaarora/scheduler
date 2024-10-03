@@ -1,6 +1,6 @@
 import React from 'react';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Calendar, Clock } from 'lucide-react';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 
 export default function EventDetails({ event }) {
   const { user } = event;
@@ -15,7 +15,7 @@ export default function EventDetails({ event }) {
             </Avatar>
             <div>
                 <h2 className='text-xl font-semibold'>{user.name}</h2>
-                <p className='text-gray-600'>@{user.email}</p>
+                <p className='text-gray-600'>{user.email}</p>
             </div>
         </div>
         <div className='flex items-center mb-2'>

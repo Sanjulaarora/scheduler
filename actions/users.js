@@ -50,6 +50,7 @@ export async function getUserByUsername(username){
                 },
                 select: {
                     id: true,
+                    title: true,
                     description: true,
                     duration: true,
                     isPrivate: true,

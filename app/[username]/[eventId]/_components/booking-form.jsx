@@ -1,17 +1,17 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { bookingSchema } from '@/app/lib/validator';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DayPicker } from 'react-day-picker';
-import 'react-day-picker/style.css';
-import { useForm } from 'react-hook-form';
 import { format } from 'date-fns';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
-import useFetch from '@/hooks/use-fetch';
 import { createBooking } from '@/actions/bookings';
+import { bookingSchema } from '@/app/lib/validator';
+import 'react-day-picker/style.css';
+import useFetch from '@/hooks/use-fetch';
 
 export default function BookingForm({ event, availability }) {
   const [selectedDate, setSelectedDate] = useState(null);
@@ -21,7 +21,7 @@ export default function BookingForm({ event, availability }) {
         register, 
         handleSubmit,
         formState: { errors },
-        setValue
+        setValue,
     } = useForm({
         resolver: zodResolver(bookingSchema),
     });
@@ -66,6 +66,7 @@ export default function BookingForm({ event, availability }) {
    }; 
 
    const availableDays = availability.map((day) => new Date(day.date));
+
     const timeSlots = selectedDate
     ? availability.find(
         (day) => day.date === format(selectedDate, 'yyyy-MM-dd')
@@ -126,9 +127,9 @@ export default function BookingForm({ event, availability }) {
                         <div className='grid grid-cols-2 lg:grid-cols-3 gap-2'>
                             {timeSlots.map((slot) => (
                                     <Button 
-                                    key={slot} 
-                                    onClick={() => setSelectedTime(slot)}
-                                    variant={selectedTime === slot ? 'default' : 'outline'}
+                                        key={slot} 
+                                        onClick={() => setSelectedTime(slot)}
+                                        variant={selectedTime === slot ? 'default' : 'outline'}
                                     >
                                         {slot}
                                     </Button>

@@ -1,12 +1,12 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle} from './ui/card';
+import { deleteEvent } from '@/actions/events';
 import { Button } from './ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle} from './ui/card';
+import useFetch from '@/hooks/use-fetch';
 import { Link, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { deleteEvent } from '@/actions/events';
-import useFetch from '@/hooks/use-fetch';
 
 export default function EventCard({ event, username, isPublic = false }) {
   const [isCopied, setIsCopied] = useState(false);  
@@ -56,9 +56,9 @@ export default function EventCard({ event, username, isPublic = false }) {
         <CardContent>
           <p>{event.description.substring(0, event.description.indexOf('.'))}</p>
         </CardContent>
-        { !isPublic && 
-            (<CardFooter className='flex gap-2'>
-              <Button variant='outline' className='flex items-center' onClick={handleCopy}>
+        { !isPublic && (
+            <CardFooter className='flex gap-2'>
+              <Button variant='outline' onClick={handleCopy} className='flex items-center'>
                 <Link className='mr-2 h-4 w-4'/>
                  {isCopied ? 'Copied!' : 'Copy Link'}
               </Button>
@@ -70,8 +70,8 @@ export default function EventCard({ event, username, isPublic = false }) {
                 <Trash2 className='mr-2 h-4 w-4'/>
                 {loading ? 'Deleting...' : 'Delete'}
               </Button>
-            </CardFooter>)
-        }
+            </CardFooter>
+          )}
     </Card>
   );
 }

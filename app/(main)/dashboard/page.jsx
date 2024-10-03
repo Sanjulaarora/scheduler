@@ -14,7 +14,7 @@ import { BarLoader } from 'react-spinners';
 import { getLatestUpdates } from '@/actions/dashboard';
 import { format } from 'date-fns';
 
-const Dashboard = () => {
+export default function DashboardPage() {
   const { isLoaded, user } = useUser();
 
   const {register, handleSubmit, setValue, formState: { errors }, } = useForm({
@@ -27,7 +27,7 @@ const Dashboard = () => {
 
   const { 
     loading: loadingUpdates, 
-    error: upcomingMeetings, 
+    data: upcomingMeetings, 
     fn: fnUpdates, 
   } = useFetch(getLatestUpdates);
 
@@ -50,27 +50,30 @@ const Dashboard = () => {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          {!loadingUpdates ? ( <div>
-            {upcomingMeetings && upcomingMeetings?.length > 0 ? (
-              <ul className="list-disc pl-5">
-                {upcomingMeetings?.map((meeting) => {
-                  return (
-                    <li key={meeting.id}>
-                       - {meeting.event.title} on{' '}
-                       {format(
-                        new Date(meeting.startTime),
-                        'MMM d, yyyy h:mm a'
-                       )}{' '}
-                       with {meeting.name}
-                    </li>
-                  );
-                })}
-              </ul>
-            ) : ( <p>No Upcoming Meetings</p>)}
-          </div>  
-        ) : (
-          <p>Loading Updates...</p>
-        )}
+          {!loadingUpdates ? ( 
+              <div className="space-y-6 font-light">
+                  <div>
+                    {upcomingMeetings && upcomingMeetings?.length > 0 ? (
+                      <ul className="list-disc pl-5">
+                        {upcomingMeetings?.map((meeting) => {
+                          <li key={meeting.id}>
+                            - {meeting.event.title} on{' '}
+                            {format(
+                              new Date(meeting.startTime),
+                              'MMM d, yyyy h:mm a'
+                            )}{' '}
+                            with {meeting.name}
+                          </li>
+                        })}
+                      </ul>
+                    ) : ( 
+                      <p>No Upcoming Meetings</p>
+                    )}
+                 </div>  
+             </div>   
+          ) : (
+            <p>Loading Updates...</p>
+          )}
         </CardContent>
       </Card>
 
@@ -94,17 +97,17 @@ const Dashboard = () => {
               )}
               {error && (
                 <p className='text-red-500 text-sm mt-1'>
-                  {error.message}
+                  {error?.message}
                 </p>
               )}
             </div>
-            {loading && <BarLoader className='mb-4' width={'100%'} color='#36d7b7' />}
+            {loading && (
+              <BarLoader className='mb-4' width={'100%'} color='#36d7b7' />
+            )}
             <Button type='submit' disabled={loading}>Update Username</Button>
           </form>
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
-
-export default Dashboard;

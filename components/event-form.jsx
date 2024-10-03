@@ -1,14 +1,14 @@
 import React from 'react';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, Controller } from 'react-hook-form';
-import { eventSchema } from '@/app/lib/validator';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from '@/components/ui/select';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
-import useFetch from '@/hooks/use-fetch';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from '@/components/ui/select';
+import { eventSchema } from '@/app/lib/validator';
 import { createEvent } from '@/actions/events';
 import { useRouter } from 'next/navigation';
-import { Textarea } from '@/components/ui/textarea';
+import useFetch from '@/hooks/use-fetch';
 
 const EventForm = ({ onSubmitForm, initialData = {} }) => {
   const router = useRouter();
@@ -76,7 +76,7 @@ const EventForm = ({ onSubmitForm, initialData = {} }) => {
           Duration (minutes)
         </label>
         <Input id='duration' 
-        {...register('duration',{
+        {...register('duration', {
           valueAsNumber: true,
         })} 
         type='number'
@@ -98,7 +98,7 @@ const EventForm = ({ onSubmitForm, initialData = {} }) => {
         <Controller name='isPrivate' control={control} 
           render = {({ field }) => (
             <Select onValueChange={(value) => field.onChange(value === 'true')}
-            value={field.value? 'true' : 'false'}
+            value={field.value ? 'true' : 'false'}
             >
               <SelectTrigger className="mt-1">
                 <SelectValue placeholder="Select Privacy" />
@@ -110,12 +110,12 @@ const EventForm = ({ onSubmitForm, initialData = {} }) => {
             </Select>
           )}
         />
-        {errors.isPrivate && (
+     </div>   
+        {/* {errors.isPrivate && (
           <p className='text-red-500 text-xs mt-1'>
             {errors.isPrivate.message}
           </p>
-        )}
-      </div>
+        )} */}
 
       {error && <p className='text-red-500 text-xs mt-1'>{error.message}</p>}
 

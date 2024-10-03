@@ -1,12 +1,12 @@
 import { Suspense } from 'react';
-import { getEventAvailability } from '@/actions/availability';
-import { getEventDetails } from '@/actions/events'
 import { notFound } from 'next/navigation';
+import { getEventDetails } from '@/actions/events';
+import { getEventAvailability } from '@/actions/availability';
 import EventDetails from './_components/event-details';
 import BookingForm from './_components/booking-form';
 
-export async function generateMetadata(params) {
-    const event = await getEventAvailability(params.username, params.eventId);
+export async function generateMetadata({params}) {
+    const event = await getEventDetails(params.username, params.eventId);
     if (!event) {
       return {
         title: 'Event Not Found',

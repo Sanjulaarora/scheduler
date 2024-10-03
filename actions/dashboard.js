@@ -23,12 +23,12 @@ export async function getLatestUpdates() {
     const upcomingMeetings = await db.booking.findMany({
         where: {
             userId: user.id,
-            startTime: { gte: now} ,
+            startTime: { gte: now},
         },
         include: {
             event: {
                 select: { 
-                    title: true
+                    title: true,
                 },
             },
         },

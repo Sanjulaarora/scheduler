@@ -1,9 +1,10 @@
+import React from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { ArrowBigRight, Calendar, Clock, LinkIcon, ArrowRight } from "lucide-react";
 import Testimonials from "@/components/testimonials";
+import Link from "next/link";
 
 const features = [
   {
@@ -39,7 +40,7 @@ const howItWorks = [
   },
 ];
 
-export default function Home() {
+const Home = () => {
   return (
     <main className="container mx-auto px-4 py-16">
       <div className="flex flex-col lg:flex-row items-center justify-between gap-12 mb-24">
@@ -48,7 +49,7 @@ export default function Home() {
           <p className="text-xl text-gray-600 mb-10">
             Scheduler helps you manage your time effectively. Create events, set your availability, and let others book time with you seamlessly.
           </p>
-          <Link href='/dashboard'>
+          <Link href={'/dashboard'}>
             <Button size="lg" className="text-lg">
               Get Started <ArrowBigRight className="ml-2 h-5 w-5" />
             </Button>
@@ -69,8 +70,7 @@ export default function Home() {
       <div className="mb-24">
         <h2 className="text-3xl font-bold text-center mb-12 text-blue-600">Key Features</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {features.map((feature, index)=>{
-            return(
+          {features.map((feature, index)=>(
               <Card key={index}>
                 <CardHeader>
                   <feature.icon className="w-12 h-12 text-blue-500 mb-4 mx-auto" />
@@ -84,8 +84,7 @@ export default function Home() {
                   </p>
                 </CardContent>
               </Card>
-            )
-          })}
+          ))}
         </div>
       </div>
 
@@ -105,7 +104,7 @@ export default function Home() {
             <div key={index} className="text-center">
               <div className='bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4'>
                 <span className="text-blue-600 font-bold text-xl">
-                  {index+1}
+                  {index + 1}
                 </span>
               </div>
               <h3 className='font-semibold text-lg mb-2'>{step.step}</h3>
@@ -122,7 +121,7 @@ export default function Home() {
         <p className="text-xl mb-6">
           Join thousands of professionals who trust Scheduler for efficient time management.
         </p>
-        <Link href="/dashboard">
+        <Link href={"/dashboard"}>
           <Button size="lg" variant="secondary" className="text-blue-600">
             Start For Free <ArrowRight className="ml-2 h-5 w-5" />
           </Button>
@@ -130,4 +129,6 @@ export default function Home() {
       </div>
     </main>
   );
-}
+};
+
+export default Home;

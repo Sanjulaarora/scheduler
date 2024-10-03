@@ -82,7 +82,6 @@ export async function updateAvailability(data) {
                 },
               ];
             }
-
             return [];
         }
     );  
