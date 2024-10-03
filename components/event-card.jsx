@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { deleteEvent } from '@/actions/events';
 import { Button } from './ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle} from './ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter} from './ui/card';
 import useFetch from '@/hooks/use-fetch';
 import { Link, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';

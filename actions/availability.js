@@ -127,7 +127,7 @@ export async function getEventAvailability(eventId) {
                     bookings: {
                         select: {
                             startTime: true,
-                            endtime: true,
+                            endTime: true,
                         },
                     },
                 },

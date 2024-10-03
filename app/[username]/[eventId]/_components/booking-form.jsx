@@ -75,7 +75,7 @@ export default function BookingForm({ event, availability }) {
 
 
    if (data) {
-    retrun (
+    return (
         <div className='text-center p-10 border bg-white'>
             <h2 className='text-2xl font-bold mb-4'>Booking Successful</h2>
             {data.meetLink && (
